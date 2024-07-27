@@ -1,0 +1,29 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for textbook in textbooks %}
+    <div class="border">
+        <div>{{ textbook.name }}</div>
+        <div>{{ textbook.annotation }}</div>
+        <div>{{ textbook.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ textbook.udc }}</div>
+        <div>{{ textbook.isbn }}</div>
+        <div>{{ textbook.slug }}</div>
+        <a href="{{ textbook.file.url }}" download>{{ textbook.file.name }}</a>
+        <a href="{{ textbook.STC_certificate|default_if_none:'#' }}" download>{{ textbook.STC_certificate.name }}</a>
+        <div>{{ textbook.publication_date }}</div>
+        <div>{{ textbook.add_date }}</div>
+        <form method="POST" action="{% url 'library:textbook-delete' slug=textbook.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:textbook-update' slug=textbook.slug %}">Изменить</a>
+    </div>
+{% empty %}
+<div class="h4 text-center">Нет загруженных учебных пособий</div>
+{% endfor %}
+<a href="{% url 'library:textbook-create' %}">Добавить</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for author in authors %}
+    <div class="border">
+        <div>{{ author.first_name }}</div>
+        <div>{{ author.last_name }}</div>
+        <div>{{ author.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ author.patronymic }}</div>
+        <div>{{ author.rank }}</div>
+        <div>{{ author.division }}</div>
+        <div>{{ author.user }}</div>
+        <form method="POST" action="{% url 'library:author-delete' pk=author.pk %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:author-update' pk=author.pk %}">Изменить</a>
+    </div>
+{% endfor %}
+<a href="{% url 'library:author-create' %}">Добавить</a>
+{% endblock %}

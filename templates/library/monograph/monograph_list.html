@@ -1,0 +1,28 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for monograph in monographs %}
+    <div class="border">
+        <div>{{ monograph.name }}</div>
+        <div>{{ monograph.annotation }}</div>
+        <div>{{ monograph.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ monograph.isbn }}</div>
+        <div>{{ monograph.udc }}</div>
+        <div>{{ monograph.slug }}</div>
+        <a href="{{ monograph.file.url }}" download>{{ monograph.file.name }}</a>
+        <div>{{ monograph.publication_date }}</div>
+        <div>{{ monograph.add_date }}</div>
+        <form method="POST" action="{% url 'library:monograph-delete' slug=monograph.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:monograph-update' slug=monograph.slug %}">Изменить</a>
+    </div>
+{% empty %}
+<div class="h4 text-center">Нет загруженных монографий</div>
+{% endfor %}
+<a href="{% url 'library:monograph-create' %}">Добавить</a>
+{% endblock %}

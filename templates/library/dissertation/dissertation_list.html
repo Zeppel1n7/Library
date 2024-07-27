@@ -1,0 +1,27 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for dissertation in dissertations %}
+    <div class="border">
+        <div>{{ dissertation.name }}</div>
+        <div>{{ dissertation.annotation }}</div>
+        <div>{{ dissertation.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ dissertation.udc }}</div>
+        <div>{{ dissertation.slug }}</div>
+        <a href="{{ dissertation.file.url }}" download>{{ dissertation.file.name }}</a>
+        <div>{{ dissertation.publication_date }}</div>
+        <div>{{ dissertation.add_date }}</div>
+        <form method="POST" action="{% url 'library:dissertation-delete' slug=dissertation.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:dissertation-update' slug=dissertation.slug %}">Изменить</a>
+    </div>
+{% empty %}
+<div class="h4 text-center">Нет загруженных диссертаций</div>
+{% endfor %}
+<a href="{% url 'library:dissertation-create' %}">Добавить</a>
+{% endblock %}

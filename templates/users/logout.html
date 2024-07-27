@@ -1,0 +1,25 @@
+{% extends 'layout/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center h-100 w-100">
+    <div class="w-100" style="max-width: 30rem;">
+        <div class="text-center fw-bold mb-3 h4">Вы успешно вышли из системы</div>
+        <a id="redirect-btn" href="{% url 'users:login' %}" class="btn btn-success w-100">На страницу входа</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+    link = document.getElementById('redirect-btn').href;
+    setTimeout(function() {
+        location.href = link;
+      }, 10000)
+});
+</script>
+{% endblock %}

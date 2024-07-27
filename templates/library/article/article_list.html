@@ -1,0 +1,28 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for article in articles %}
+    <div class="border">
+        <div>{{ article.name }}</div>
+        <div>{{ article.annotation }}</div>
+        <div>{{ article.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ article.keywords }}</div>
+        <div>{{ article.science_base }}</div>
+        <div>{{ article.journal }}</div>
+        <div>{{ article.udc }}</div>
+        <div>{{ article.slug }}</div>
+        <a href="{{ article.file.url }}" download>{{ article.file.name }}</a>
+        <div>{{ article.publication_date }}</div>
+        <div>{{ article.add_date }}</div>
+        <form method="POST" action="{% url 'library:article-delete' slug=article.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:article-update' slug=article.slug %}">Изменить</a>
+    </div>
+{% endfor %}
+<a href="{% url 'library:article-create' %}">Добавить</a>
+{% endblock %}

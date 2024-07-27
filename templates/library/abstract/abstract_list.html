@@ -1,0 +1,28 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for abstract in abstracts %}
+    <div class="border">
+        <div>{{ abstract.name }}</div>
+        <div>{{ abstract.annotation }}</div>
+        <div>{{ abstract.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ abstract.udc }}</div>
+        <div>{{ abstract.slug }}</div>
+        <a href="{{ abstract.file.url }}" download>{{ abstract.file.name }}</a>
+        <div>{{ abstract.publication_date }}</div>
+        <div>{{ abstract.add_date }}</div>
+        <form method="POST" action="{% url 'library:abstract-delete' slug=abstract.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:abstract-update' slug=abstract.slug %}">Изменить</a>
+    </div>
+{% empty %}
+<div class="h4">Нет загруженных авторефератов</div>
+{% endfor %}
+
+<a href="{% url 'library:abstract-create' %}">Добавить</a>
+{% endblock %}

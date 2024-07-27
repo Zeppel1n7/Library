@@ -1,0 +1,27 @@
+{% extends 'layout/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center h-100 w-100">
+    <div class="login-form w-100">
+        <form action="{% url 'users:logout' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-success" value="Выйти">
+        </form>
+    </div>
+    <a href="{% url 'library:abstract-list' %}">рефераты</a>
+    <a href="{% url 'library:article-list' %}">статьи</a>
+    <a href="{% url 'library:dissertation-list' %}">диссертации</a>
+    <a href="{% url 'library:proposal-list' %}">рацпредложения</a>
+    <a href="{% url 'library:monograph-list' %}">монографии</a>
+    <a href="{% url 'library:patent-list' %}">патенты</a>
+    <a href="{% url 'library:program-list' %}">ПЭВМ</a>
+    <a href="{% url 'library:textbook-list' %}">учебные пособия</a>
+    <a href="{% url 'library:author-list' %}">АВТОРЫ</a>
+
+
+    <a href="{% url 'admin:index' %}">Админ панель</a>
+</div>
+{% endblock %}

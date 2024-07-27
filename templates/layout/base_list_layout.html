@@ -1,0 +1,14 @@
+{% extends 'layout/layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Базовый шаблон списка{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center h-100 w-100">
+    <div class="login-form w-100">
+        {% block list %} {% endblock %}
+        {% include 'layout/paginator.html' %}
+    </div>
+    <a href="{% url 'admin:index' %}">Админ панель</a>
+</div>
+{% endblock %}

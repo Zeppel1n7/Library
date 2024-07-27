@@ -1,0 +1,28 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for proposal in proposals %}
+    <div class="border">
+        <div>{{ proposal.name }}</div>
+        <div>{{ proposal.annotation }}</div>
+        <div>{{ proposal.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ proposal.doc_num }}</div>
+        <div>{{ proposal.slug }}</div>
+        <a href="{{ proposal.file.url }}" download>{{ proposal.file.name }}</a>
+        <a href="{{ proposal.certificate.url }}" download>{{ proposal.certificate.name }}</a>
+        <div>{{ proposal.publication_date }}</div>
+        <div>{{ proposal.add_date }}</div>
+        <form method="POST" action="{% url 'library:proposal-delete' slug=proposal.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:proposal-update' slug=proposal.slug %}">Изменить</a>
+    </div>
+{% empty %}
+<div class="h4 text-center">Нет загруженных рацпредложений</div>
+{% endfor %}
+<a href="{% url 'library:proposal-create' %}">Добавить</a>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for program in programs %}
+    <div class="border">
+        <div>{{ program.name }}</div>
+        <div>{{ program.annotation }}</div>
+        <div>{{ program.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ program.doc_num }}</div>
+        <div>{{ program.slug }}</div>
+        <a href="{{ program.file.url }}" download>{{ program.file.name }}</a>
+        <div>{{ program.publication_date }}</div>
+        <div>{{ program.add_date }}</div>
+        <form method="POST" action="{% url 'library:program-delete' slug=program.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:program-update' slug=program.slug %}">Изменить</a>
+    </div>
+{% empty %}
+<div class="h4 text-center">Нет загруженных ПЭВМ</div>
+{% endfor %}
+<a href="{% url 'library:program-create' %}">Добавить</a>
+{% endblock %}

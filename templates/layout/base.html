@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="7 NR">
+    <title>{% block title %} BASE PAGE {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'vendors/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block styles %} {% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+    <header>
+        {% block navbar %} {% endblock %}
+    </header>
+
+    <main class="container-fluid flex-shrink-0 flex-grow-1">
+    {% block content %} {% endblock %}
+    </main>
+
+    {% block footer %} {% endblock %}
+
+<script src="{% static 'vendors/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'vendors/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+{% block scripts %} {% endblock %}
+</body>
+</html>

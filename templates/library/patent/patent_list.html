@@ -1,0 +1,27 @@
+{% extends 'layout/base_list_layout.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block list %}
+{% for patent in patents %}
+    <div class="border">
+        <div>{{ patent.name }}</div>
+        <div>{{ patent.annotation }}</div>
+        <div>{{ patent.is_secret|yesno:"ДСП,НС,Ошибка" }}</div>
+        <div>{{ patent.doc_num }}</div>
+        <div>{{ patent.slug }}</div>
+        <a href="{{ patent.file.url }}" download>{{ patent.file.name }}</a>
+        <div>{{ patent.publication_date }}</div>
+        <div>{{ patent.add_date }}</div>
+        <form method="POST" action="{% url 'library:patent-delete' slug=patent.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Удалить">
+        </form>
+        <a href="{% url 'library:patent-update' slug=patent.slug %}">Изменить</a>
+    </div>
+{% empty %}
+<div class="h4 text-center">Нет загруженных патентов</div>
+{% endfor %}
+<a href="{% url 'library:patent-create' %}">Добавить</a>
+{% endblock %}
